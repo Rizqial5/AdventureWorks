@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="AdventureWorks2022" Class="AdventureWorks22DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="Person.Person" Member="Persons">
+    <Type Name="Person">
+      <Column Name="BusinessEntityID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PersonType" Type="System.String" DbType="NChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="NameStyle" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MiddleName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Suffix" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="EmailPromotion" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AdditionalContactInfo" Type="System.Xml.Linq.XElement" DbType="Xml" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Demographics" Type="System.Xml.Linq.XElement" DbType="Xml" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="rowguid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="BusinessEntity_Person" Member="BusinessEntity" ThisKey="BusinessEntityID" OtherKey="BusinessEntityID" Type="BusinessEntity" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Person.CountryRegion" Member="CountryRegions">
+    <Type Name="CountryRegion">
+      <Column Name="CountryRegionCode" Type="System.String" DbType="NVarChar(3) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CountryRegion_SalesTerritory" Member="SalesTerritories" ThisKey="CountryRegionCode" OtherKey="CountryRegionCode" Type="SalesTerritory" />
+      <Association Name="CountryRegion_StateProvince" Member="StateProvinces" ThisKey="CountryRegionCode" OtherKey="CountryRegionCode" Type="StateProvince" />
+    </Type>
+  </Table>
+  <Table Name="Person.BusinessEntityAddress" Member="BusinessEntityAddresses">
+    <Type Name="BusinessEntityAddress">
+      <Column Name="BusinessEntityID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AddressID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AddressTypeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="rowguid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="AddressType_BusinessEntityAddress" Member="AddressType" ThisKey="AddressTypeID" OtherKey="AddressTypeID" Type="AddressType" IsForeignKey="true" />
+      <Association Name="BusinessEntity_BusinessEntityAddress" Member="BusinessEntity" ThisKey="BusinessEntityID" OtherKey="BusinessEntityID" Type="BusinessEntity" IsForeignKey="true" />
+      <Association Name="Address_BusinessEntityAddress" Member="Address" ThisKey="AddressID" OtherKey="AddressID" Type="Address" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Person.AddressType" Member="AddressTypes">
+    <Type Name="AddressType">
+      <Column Name="AddressTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="rowguid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="AddressType_BusinessEntityAddress" Member="BusinessEntityAddresses" ThisKey="AddressTypeID" OtherKey="AddressTypeID" Type="BusinessEntityAddress" />
+    </Type>
+  </Table>
+  <Table Name="Person.BusinessEntity" Member="BusinessEntities">
+    <Type Name="BusinessEntity">
+      <Column Name="BusinessEntityID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="rowguid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="BusinessEntity_Person" Member="Person" ThisKey="BusinessEntityID" OtherKey="BusinessEntityID" Type="Person" Cardinality="One" />
+      <Association Name="BusinessEntity_BusinessEntityAddress" Member="BusinessEntityAddresses" ThisKey="BusinessEntityID" OtherKey="BusinessEntityID" Type="BusinessEntityAddress" />
+    </Type>
+  </Table>
+  <Table Name="Person.Address" Member="Addresses">
+    <Type Name="Address">
+      <Column Name="AddressID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AddressLine1" Type="System.String" DbType="NVarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="AddressLine2" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="StateProvinceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="rowguid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Address_BusinessEntityAddress" Member="BusinessEntityAddresses" ThisKey="AddressID" OtherKey="AddressID" Type="BusinessEntityAddress" />
+      <Association Name="StateProvince_Address" Member="StateProvince" ThisKey="StateProvinceID" OtherKey="StateProvinceID" Type="StateProvince" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Sales.SalesTerritory" Member="SalesTerritories">
+    <Type Name="SalesTerritory">
+      <Column Name="TerritoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryRegionCode" Type="System.String" DbType="NVarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="[Group]" Member="Group" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SalesYTD" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="SalesLastYear" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CostYTD" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CostLastYear" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="rowguid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="SalesTerritory_StateProvince" Member="StateProvinces" ThisKey="TerritoryID" OtherKey="TerritoryID" Type="StateProvince" />
+      <Association Name="CountryRegion_SalesTerritory" Member="CountryRegion" ThisKey="CountryRegionCode" OtherKey="CountryRegionCode" Type="CountryRegion" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Person.StateProvince" Member="StateProvinces">
+    <Type Name="StateProvince">
+      <Column Name="StateProvinceID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StateProvinceCode" Type="System.String" DbType="NChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryRegionCode" Type="System.String" DbType="NVarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="IsOnlyStateProvinceFlag" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="TerritoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="rowguid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="StateProvince_Address" Member="Addresses" ThisKey="StateProvinceID" OtherKey="StateProvinceID" Type="Address" />
+      <Association Name="CountryRegion_StateProvince" Member="CountryRegion" ThisKey="CountryRegionCode" OtherKey="CountryRegionCode" Type="CountryRegion" IsForeignKey="true" />
+      <Association Name="SalesTerritory_StateProvince" Member="SalesTerritory" ThisKey="TerritoryID" OtherKey="TerritoryID" Type="SalesTerritory" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
