@@ -22,9 +22,7 @@ namespace AdventureWorks.Services
         [OperationContract]
         IEnumerable<SalesTerritorryDTO> GetTerritoriesByRegionCode(string regionCode);
 
-        [OperationContract]
-        int GetTerritoriesIdByName(string territoriesName);
-
+    
         [OperationContract]
         IEnumerable<SalesTerritorryDTO> GetAllTerritories();
 
@@ -33,6 +31,10 @@ namespace AdventureWorks.Services
 
         [OperationContract]
         string GetCountryRegionIdByName(string regionName);
+
+        [OperationContract]
+        int GetTerritoriesIdByName(string territoriesName);
+
 
         [OperationContract]
         void ImportFromExcel(StateProvinceDTO stateProvinceDTO);
@@ -44,6 +46,9 @@ namespace AdventureWorks.Services
         void UpdateStateProvince(StateProvinceDTO stateProvinceDTO, Guid oldGUid);
 
         [OperationContract]
-        void DeleteStateProvince(int id);   
+        void DeleteStateProvince(int id);
+
+        [OperationContract]
+        int GetStateProvinceIdByName(string stateProvinceName);
     }
 }

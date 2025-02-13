@@ -52,6 +52,11 @@ namespace AdventureWorks.Services
 
         public void InsertStateProvince(StateProvinceDTO stateProvinceDTO)
         {
+            if(stateProvinceDTO.StateProvinceID != 0)
+            {
+                stateProvinceDTO.StateProvinceID = 0;
+            }
+
 
             var newStateProvince = new StateProvince
             {
@@ -159,6 +164,13 @@ namespace AdventureWorks.Services
             var checkData = _context.CountryRegions.FirstOrDefault(cr => cr.Name == regionName);
 
             return checkData.CountryRegionCode;
+        }
+
+        public int GetStateProvinceIdByName(string stateProvinceName)
+        {
+           var data = _context.StateProvinces.FirstOrDefault(sp => sp.Name == stateProvinceName);
+
+           return data.StateProvinceID;    
         }
     }
 }

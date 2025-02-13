@@ -26,6 +26,10 @@ namespace AdventureWorks.Services
         public void AddAddress(AddressDTO addressDTO, int businessEntityID)
         {
 
+            if(addressDTO.AddressID != 0)
+            {
+                addressDTO.AddressID = 0;
+            }
 
             //addressDTO.AddressID = businessEntityAddress.AddressID;
             //addressDTO.rowguid = businessEntityAddress.rowguid;
@@ -117,6 +121,8 @@ namespace AdventureWorks.Services
                               {
                                   AddressID = a.AddressID,
                                   BusinessEntityID = p.BusinessEntityID,
+                                  AddressLine1 = a.AddressLine1,
+                                  AddressLine2 = a.AddressLine2,
                                   AddressesTypeName = at.Name,
                                   AddressessFullName = a.AddressLine1 + ", " + (a.AddressLine2 ?? ""),
                                   StatesProvinceName = sp.Name,
@@ -181,7 +187,7 @@ namespace AdventureWorks.Services
             var businessEA = new BusinessEntityAddress
             {
                 AddressID = addressDTO.AddressID,
-                AddressTypeID = Convert.ToInt16(addressDTO.AddressesTypeName),
+                AddressTypeID = Convert.ToInt32(addressDTO.AddressesTypeName),
                 BusinessEntityID = businessEntityID,
                 ModifiedDate = DateTime.Now,
                 rowguid = Guid.NewGuid(),
@@ -194,6 +200,49 @@ namespace AdventureWorks.Services
 
 
 
+        }
+
+        public void ImportFromExcel(AddressDTO addressDTO)
+        {
+
+            if (CheckAddressId(addressDTO.AddressID, addressDTO.BusinessEntityID))
+            {
+                UpdateAddress(addressDTO, addressDTO.BusinessEntityID, addressDTO.rowguid);
+            }
+            else
+            {
+
+                AddAddress(addressDTO, addressDTO.BusinessEntityID);
+            }
+
+        }
+
+        private bool CheckAddressId(int addresId, int businesEntityID)
+        {
+            var targetData = (from a in _context.Addresses
+                             join bea in _context.BusinessEntityAddresses on a.AddressID equals bea.AddressID
+                             where bea.BusinessEntityID == businesEntityID
+                             select a)
+                             .FirstOrDefault(a => a.AddressID == addresId);
+
+            if (targetData == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public int GetAddressTypeIdByName(string addressTypeName)
+        {
+            var targetData = (from at in _context.AddressTypes
+                              where at.Name == addressTypeName
+                              select at.AddressTypeID)
+                             .FirstOrDefault();
+
+            return targetData;
         }
     }
 }

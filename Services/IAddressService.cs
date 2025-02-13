@@ -28,6 +28,12 @@ namespace AdventureWorks.Services
         [OperationContract]
         void DeleteAddress(int id, int businessEntityID);
 
+        [OperationContract]
+        void ImportFromExcel(AddressDTO addressDTO);
+
+        [OperationContract]
+        int GetAddressTypeIdByName(string addressTypeName);
+
 
     }
 }
